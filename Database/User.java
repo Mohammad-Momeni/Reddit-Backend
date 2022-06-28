@@ -7,12 +7,14 @@ public class User {
     private String password;
     private String email;
     private ArrayList<Post> posts;
+    private ArrayList<Post> savedPosts;
     private int postCount;
     User (String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.posts = new ArrayList<Post>();
+        this.savedPosts = new ArrayList<Post>();
         this.postCount = 0;
     }
     public String getUsername() {
@@ -30,6 +32,9 @@ public class User {
     public int getPostCount() {
         return postCount;
     }
+    public ArrayList<Post> getSavedPosts() {
+        return savedPosts;
+    }
     public void addPost(Post post) {
         posts.add(post);
         postCount++;
@@ -38,5 +43,10 @@ public class User {
         posts.remove(post);
         postCount--;
     }
-
+    public void addSavedPost(Post post) {
+        savedPosts.add(post);
+    }
+    public void removeSavedPost(Post post) {
+        savedPosts.remove(post);
+    }
 }
