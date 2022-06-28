@@ -23,6 +23,9 @@ public class RequestHandler extends Thread {
             else if(requestParts[0].equals("signup")) {
                 
             }
+            out.close();
+            in.close();
+            socket.close();
         } catch(IOException e) {}
     }
 }
