@@ -17,9 +17,14 @@ public class RequestHandler extends Thread {
         try {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            String request = in.readUTF();
-            String response = new Controller().run(request);
-            out.writeUTF(response);
+            StringBuilder request = new StringBuilder();
+            int c = in.read();
+            while(c != 0) {
+                request.append((char) c);
+                c = in.read();
+            }
+            String response = new Controller().run(request.toString());
+            out.writeBytes(response);
             out.flush();
             out.close();
             in.close();
