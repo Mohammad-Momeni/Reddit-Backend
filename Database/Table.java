@@ -26,4 +26,7 @@ public class Table {
         scanner.close();
         return data;
     }
+    public String getPath() {
+        return path;
+    }
 }

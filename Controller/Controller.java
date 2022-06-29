@@ -1,5 +1,7 @@
 package Controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,10 +9,22 @@ import Database.Database;
 
 public class Controller {
     private String login(String username, String password) {
-        if(username.equals("MohammadM404") && password.equals("matin@123")) {
-            return "success";
-        } else {
-            return "failed";
+        try {
+            ArrayList<String> data = Database.getInstance().getTable("&&User").get();
+            for (String line : data) {
+                if(line.equals(username)) {
+                    String test = Database.getInstance().getTable(username).getPath();
+                    System.out.println(test);
+                    ArrayList<String> userData = Database.getInstance().getTable(username).get();
+                    String[] userDataArray = userData.get(0).split(",");
+                    if(userDataArray[1].equals(password)) {
+                        return "success";
+                    }
+                }
+            }
+            return "wrong username or password";
+        } catch (IOException e) {
+            return "error";
         }
     }
     private String signUp(String username, String password, String email) {
@@ -25,11 +39,11 @@ public class Controller {
         } else {
             try {
                 Database.getInstance().getTable("&&User").insert(username);
-                Database.getInstance().addTable(username, "src/Data/" + username + ".txt");
-                Database.getInstance().getTable(username).insert(password + "," + email);
-            return "success";
+                Database.getInstance().addTable(username, "./Data/" + username + ".txt");
+                Database.getInstance().getTable(username).insert(username + "," + password + "," + email);
+                return "success";
             } catch(Exception e) {
-                return "failed";
+                return "error";
             }
         }
     }

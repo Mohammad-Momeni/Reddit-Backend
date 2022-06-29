@@ -1,5 +1,7 @@
 package Database;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Database {
@@ -7,7 +9,8 @@ public class Database {
     private HashMap<String, Table> tables;
     Database() {
         tables = new HashMap<String, Table>();
-        tables.put("&&User", new Table("src/Data/User.txt"));
+        tables.put("&&User", new Table("./Data/Users.txt"));
+        this.inilialize();
     }
     public static Database getInstance() {
         if (instance == null) {
@@ -20,5 +23,13 @@ public class Database {
     }
     public Table getTable(String name) {
         return tables.get(name);
+    }
+    public void inilialize() {
+        try {
+            ArrayList<String> fileList = tables.get("&&User").get();
+            for (String line : fileList) {
+                tables.put(line, new Table("./Data/" + line + ".txt"));
+            }
+        } catch (IOException e) {}
     }
 }
