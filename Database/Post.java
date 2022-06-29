@@ -1,5 +1,7 @@
 package Database;
 
+import java.util.ArrayList;
+
 public class Post {
     private String postText;
     private String postDate;
@@ -7,6 +9,7 @@ public class Post {
     private SubReddit subReddit;
     private int likes;
     private int dislikes;
+    private ArrayList<Comment> comments;
     Post(String postText, String postDate, String postTime, SubReddit subReddit, int likes, int dislikes) {
         this.postText = postText;
         this.postDate = postDate;
@@ -14,6 +17,7 @@ public class Post {
         this.subReddit = subReddit;
         this.likes = likes;
         this.dislikes = dislikes;
+        this.comments = new ArrayList<Comment>();
     }
     public String getPostText() {
         return postText;
@@ -32,5 +36,8 @@ public class Post {
     }
     public int getDislikes() {
         return dislikes;
+    }
+    public ArrayList<Comment> getComments() {
+        return comments;
     }
 }

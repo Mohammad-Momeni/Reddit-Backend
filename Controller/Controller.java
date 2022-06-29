@@ -13,8 +13,6 @@ public class Controller {
             ArrayList<String> data = Database.getInstance().getTable("&&User").get();
             for (String line : data) {
                 if(line.equals(username)) {
-                    String test = Database.getInstance().getTable(username).getPath();
-                    System.out.println(test);
                     ArrayList<String> userData = Database.getInstance().getTable(username).get();
                     String[] userDataArray = userData.get(0).split(",");
                     if(userDataArray[1].equals(password)) {
