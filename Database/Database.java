@@ -10,6 +10,7 @@ public class Database {
     Database() {
         tables = new HashMap<String, Table>();
         tables.put("&&User", new Table("./Data/Users.txt"));
+        tables.put("&&Post", new Table("./Data/Posts.txt"));
         this.inilialize();
     }
     public static Database getInstance() {

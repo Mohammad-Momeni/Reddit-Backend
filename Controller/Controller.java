@@ -40,13 +40,49 @@ public class Controller {
                 if(isDuplicate(username, email)) {
                     return "duplicate";
                 }
-                Database.getInstance().getTable("&&User").insert(username);
+                Database.getInstance().getTable("&&User").insert(username,true);
                 Database.getInstance().addTable(username, "./Data/" + username + ".txt");
-                Database.getInstance().getTable(username).insert(username + "," + password + "," + email);
+                Database.getInstance().getTable(username).insert(username + "," + password + "," + email,true);
                 return "success";
             } catch(Exception e) {
                 return "error";
             }
+        }
+    }
+    private String feed() {
+        try {
+            ArrayList<String> input = Database.getInstance().getTable("&&Post").get();
+            StringBuilder output = new StringBuilder("success\n");
+            for(String line : input) {
+                output.append(line + "\n");
+            }
+            output.deleteCharAt(output.length() - 1);
+            return output.toString();
+        } catch (IOException e) {
+            return "error";
+        }
+    }
+    private String dLike(String postText,boolean Like) {
+        try {
+            ArrayList<String> input = Database.getInstance().getTable("&&Post").get();
+            for(int i=0;i<input.size();i++) {
+                String[] postData = input.get(i).split("&&");
+                if(postData[0].equals(postText)) {
+                    if(Like) {
+                        postData[4] = Integer.toString(Integer.parseInt(postData[4]) + 1);
+                    } else {
+                        postData[4] = Integer.toString(Integer.parseInt(postData[4]) - 1);
+                    }
+                }
+                if(i == 0) {
+                    Database.getInstance().getTable("&&Post").insert(postData[0] + "&&" + postData[1] + postData[2] + "&&" + postData[3] + postData[4] + "&&" + postData[5] + "&&" + postData[6], false);
+                } else {
+                    Database.getInstance().getTable("&&Post").insert(postData[0] + "&&" + postData[1] + postData[2] + "&&" + postData[3] + postData[4] + "&&" + postData[5] + "&&" + postData[6], true);
+                }
+            }
+            return "success";
+        } catch(Exception e) {
+            return "error";
         }
     }
     public String run(String request) {
@@ -56,6 +92,8 @@ public class Controller {
                 return login(requestParts[1], requestParts[2]);
             case "signUp":
                 return signUp(requestParts[1], requestParts[2], requestParts[3]);
+            case "feed":
+                return feed();
             default:
                 return "invalid request";
         }

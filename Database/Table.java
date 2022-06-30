@@ -11,8 +11,8 @@ public class Table {
     Table(String path) {
         this.path = path;
     }
-    public void insert(String data) throws IOException {
-        FileWriter writer = new FileWriter(path, true);
+    public void insert(String data,boolean append) throws IOException {
+        FileWriter writer = new FileWriter(path, append);
         writer.write(data + "\n");
         writer.close();
     }
