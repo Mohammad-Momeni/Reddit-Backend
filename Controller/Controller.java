@@ -85,6 +85,14 @@ public class Controller {
             return "error";
         }
     }
+    private String addPost(String author, String postText, String subRedditName, String date) {
+        try {
+            Database.getInstance().getTable("&&Post").insert(subRedditName + "&&" + author + "&&" + date + "&&" + postText + "&&" + "0" + "&&" + "0" + "&&" + "0", true);
+            return "success";
+        } catch(Exception e) {
+            return "error";
+        }
+    }
     public String run(String request) {
         String[] requestParts = request.split("&&");
         switch (requestParts[0]) {
@@ -94,6 +102,10 @@ public class Controller {
                 return signUp(requestParts[1], requestParts[2], requestParts[3]);
             case "feed":
                 return feed();
+            case "dLike":
+                return dLike(requestParts[1], Boolean.parseBoolean(requestParts[2]));
+            case "addPost":
+                return addPost(requestParts[1], requestParts[2], requestParts[3], requestParts[4]);
             default:
                 return "invalid request";
         }
