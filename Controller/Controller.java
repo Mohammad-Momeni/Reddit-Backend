@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 import Database.Database;
 
 public class Controller {
@@ -36,6 +37,9 @@ public class Controller {
             return "password invalid";
         } else {
             try {
+                if(isDuplicate(username, email)) {
+                    return "duplicate";
+                }
                 Database.getInstance().getTable("&&User").insert(username);
                 Database.getInstance().addTable(username, "./Data/" + username + ".txt");
                 Database.getInstance().getTable(username).insert(username + "," + password + "," + email);
@@ -54,6 +58,24 @@ public class Controller {
                 return signUp(requestParts[1], requestParts[2], requestParts[3]);
             default:
                 return "invalid request";
+        }
+    }
+    public boolean isDuplicate(String username,String email) {
+        try {
+            ArrayList<String> data = Database.getInstance().getTable("&&User").get();
+            for (String line : data) {
+                if(line.equals(username)) {
+                    return true;
+                }
+                ArrayList<String> userData = Database.getInstance().getTable(line).get();
+                String[] userDataArray = userData.get(0).split(",");
+                if(userDataArray[2].equals(email)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (IOException e) {
+            return false;
         }
     }
 }
