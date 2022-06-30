@@ -10,7 +10,9 @@ public class Post {
     private int likes;
     private int dislikes;
     private ArrayList<Comment> comments;
-    Post(String postText, String postDate, String postTime, SubReddit subReddit, int likes, int dislikes) {
+    private int commentCount;
+    private User poster;
+    Post(String postText, String postDate, String postTime, SubReddit subReddit, int likes, int dislikes, User poster) {
         this.postText = postText;
         this.postDate = postDate;
         this.postTime = postTime;
@@ -18,6 +20,8 @@ public class Post {
         this.likes = likes;
         this.dislikes = dislikes;
         this.comments = new ArrayList<Comment>();
+        this.commentCount = 0;
+        this.poster = poster;
     }
     public String getPostText() {
         return postText;
@@ -39,5 +43,18 @@ public class Post {
     }
     public ArrayList<Comment> getComments() {
         return comments;
+    }
+    public int getCommentCount() {
+        return commentCount;
+    }
+    public User getPoster() {
+        return poster;
+    }
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        commentCount++;
+    }
+    public String toString() {
+        return postText + "," + postDate + "," + postTime + "," + subReddit + "," + likes + "," + dislikes + "," + comments + "," + commentCount + "," + poster + "\n";
     }
 }

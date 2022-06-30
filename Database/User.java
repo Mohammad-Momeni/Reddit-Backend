@@ -9,6 +9,9 @@ public class User {
     private ArrayList<Post> posts;
     private ArrayList<Post> savedPosts;
     private int postCount;
+    private int savedPostCount;
+    private ArrayList<SubReddit> FavoriteSubReddits;
+    private int favoriteSubRedditCount;
     User (String username, String password, String email) {
         this.username = username;
         this.password = password;
@@ -16,6 +19,9 @@ public class User {
         this.posts = new ArrayList<Post>();
         this.savedPosts = new ArrayList<Post>();
         this.postCount = 0;
+        this.savedPostCount = 0;
+        this.FavoriteSubReddits = new ArrayList<SubReddit>();
+        this.favoriteSubRedditCount = 0;
     }
     public String getUsername() {
         return username;
@@ -48,5 +54,25 @@ public class User {
     }
     public void removeSavedPost(Post post) {
         savedPosts.remove(post);
+    }
+    public int getSavedPostCount() {
+        return savedPostCount;
+    }
+    public ArrayList<SubReddit> getFavoriteSubReddits() {
+        return FavoriteSubReddits;
+    }
+    public int getFavoriteSubRedditCount() {
+        return favoriteSubRedditCount;
+    }
+    public void addFavoriteSubReddit(SubReddit subReddit) {
+        FavoriteSubReddits.add(subReddit);
+        favoriteSubRedditCount++;
+    }
+    public void removeFavoriteSubReddit(SubReddit subReddit) {
+        FavoriteSubReddits.remove(subReddit);
+        favoriteSubRedditCount--;
+    }
+    public String toString() {
+        return username + "," + password + "," + email + "," + posts + "," + postCount + "," + savedPosts + "," + savedPostCount + "," + FavoriteSubReddits + "," + favoriteSubRedditCount + "\n";
     }
 }
