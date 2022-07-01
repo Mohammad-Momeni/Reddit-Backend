@@ -11,6 +11,7 @@ public class Database {
         tables = new HashMap<String, Table>();
         tables.put("&&User", new Table("./Data/Users.txt"));
         tables.put("&&Post", new Table("./Data/Posts.txt"));
+        tables.put("&&subReddit", new Table("./Data/subReddits.txt"));
         this.inilialize();
     }
     public static Database getInstance() {

@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class SubReddit {
     private String subRedditName;
     private String subRedditDescription;
+    private String subRedditType;
     private ArrayList<Post> posts;
     private int postCount;
     private User moderator;
-    SubReddit(String subRedditName, String subRedditDescription, User moderator) {
+    SubReddit(String subRedditName, String subRedditDescription, User moderator, String subRedditType) {
         this.subRedditName = subRedditName;
+        this.subRedditType = subRedditType;
         this.posts = new ArrayList<Post>();
         this.postCount = 0;
         this.moderator = moderator;
@@ -42,7 +44,10 @@ public class SubReddit {
         posts.remove(post);
         postCount--;
     }
+    public String getSubRedditType() {
+        return subRedditType;
+    }
     public String toString() {
-        return subRedditName + "," + subRedditDescription + "," + posts + "," + postCount + "," + moderator + "\n";
+        return subRedditName + "," + subRedditDescription + "," + subRedditType + "," + postCount + "," + moderator + "\n";
     }
 }

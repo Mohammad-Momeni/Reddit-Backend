@@ -93,6 +93,24 @@ public class Controller {
             return "error";
         }
     }
+    private String addSubReddit(String subRedditName, String subRedditType) {
+        try {
+            ArrayList<String> input = Database.getInstance().getTable("&&subReddit").get();
+            for(String line : input) {
+                String name = line.split("&&")[0];
+                if(name.equals(subRedditName)) {
+                    return "duplicate";
+                }
+            }
+            if(subRedditType.equals("Type")) {
+                subRedditType = "public";
+            }
+            Database.getInstance().getTable("&&subReddit").insert(subRedditName + "&&" + subRedditType, true);
+            return "success";
+        } catch(Exception e) {
+            return "error";
+        }
+    }
     public String run(String request) {
         String[] requestParts = request.split("&&");
         switch (requestParts[0]) {
@@ -106,6 +124,8 @@ public class Controller {
                 return dLike(requestParts[1], Boolean.parseBoolean(requestParts[2]));
             case "addPost":
                 return addPost(requestParts[1], requestParts[2], requestParts[3], requestParts[4]);
+            case "addSubReddit":
+                return addSubReddit(requestParts[1], requestParts[2]);
             default:
                 return "invalid request";
         }
