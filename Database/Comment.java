@@ -7,9 +7,13 @@ public class Comment {
     private int dislikes;
     private Comment[] replies;
     private int repliesCount;
-    Comment(String text, User author) {
+    private String date;
+    private Post post;
+    Comment(String text, User author, String date, Post post) {
         this.text = text;
         this.author = author;
+        this.date = date;
+        this.post = post;
         this.likes = 0;
         this.dislikes = 0;
         this.replies = new Comment[10];
@@ -42,5 +46,14 @@ public class Comment {
     }
     public int getRepliesCount() {
         return repliesCount;
+    }
+    public String getDate() {
+        return date;
+    }
+    public Post getPost() {
+        return post;
+    }
+    public String toString() {
+        return text + "," + author + "," + date + "," + likes + "," + dislikes + "," + post + "\n";
     }
 }
