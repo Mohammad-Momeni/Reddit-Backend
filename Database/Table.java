@@ -29,4 +29,8 @@ public class Table {
     public String getPath() {
         return path;
     }
+    public void delete() {
+        File file = new File(path);
+        file.delete();
+    }
 }

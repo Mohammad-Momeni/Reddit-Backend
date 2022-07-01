@@ -2,3 +2,4 @@ CE SBU&&public
 AP Project&&private
 Gaming&&public
 Cinema&&Public
+Fun&&Public

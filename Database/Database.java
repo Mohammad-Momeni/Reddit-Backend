@@ -34,4 +34,9 @@ public class Database {
             }
         } catch (IOException e) {}
     }
+    public void changeTable(String name, String newName, String newPath) {
+        tables.get(name).delete();
+        tables.remove(name);
+        tables.put(newName, new Table(newPath));
+    }
 }

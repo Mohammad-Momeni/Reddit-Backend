@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.crypto.Data;
 
 import Database.Database;
 
@@ -125,6 +126,38 @@ public class Controller {
             return "error";
         }
     }
+    private String editProfile(String username,String newUsername, String newPassword, String newEmail) {
+        Pattern pattern1 = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        Matcher matcher1 = pattern1.matcher(newEmail);
+        Pattern pattern2 = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
+        Matcher matcher2 = pattern2.matcher(newPassword);
+        if(!matcher1.find()) {
+            return "email invalid";
+        } else if(!matcher2.find()) {
+            return "password invalid";
+        } else if (isDuplicate(newUsername, newEmail)) {
+            return "duplicate";
+        }
+        try {
+            ArrayList<String> input = Database.getInstance().getTable("&&User").get();
+            for(int i=0;i<input.size();i++) {
+                if(input.get(i).equals(username)) {
+                    input.set(i, newUsername);
+                }
+                if(i == 0) {
+                    Database.getInstance().getTable("&&User").insert(input.get(i), false);
+                } else {
+                    Database.getInstance().getTable("&&User").insert(input.get(i), true);
+                }
+            }
+            Database.getInstance().changeTable(username, newUsername, "./Data/" + newUsername + ".txt");
+            Database.getInstance().getTable(newUsername).insert(newUsername + "," + newPassword + "," + newEmail,true);
+
+            return "success";
+        } catch(Exception e) {
+            return "error";
+        }
+    }
     public String run(String request) {
         String[] requestParts = request.split("&&");
         switch (requestParts[0]) {
@@ -142,6 +175,8 @@ public class Controller {
                 return addSubReddit(requestParts[1], requestParts[2]);
             case "getSubReddit":
                 return getSubReddit();
+            case "editProfile":
+                return editProfile(requestParts[1], requestParts[2], requestParts[3], requestParts[4]);
             default:
                 return "invalid request";
         }
