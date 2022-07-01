@@ -52,6 +52,7 @@ public class Controller {
     private String feed() {
         try {
             ArrayList<String> input = Database.getInstance().getTable("&&Post").get();
+            input = Sortfeed(input);
             StringBuilder output = new StringBuilder("success\n");
             for(String line : input) {
                 output.append(line + "\n");
@@ -111,6 +112,19 @@ public class Controller {
             return "error";
         }
     }
+    private String getSubReddit() {
+        try {
+            ArrayList<String> input = Database.getInstance().getTable("&&subReddit").get();
+            StringBuilder output = new StringBuilder("success\n");
+            for(String line : input) {
+                output.append(line + "\n");
+            }
+            output.deleteCharAt(output.length() - 1);
+            return output.toString();
+        } catch(Exception e) {
+            return "error";
+        }
+    }
     public String run(String request) {
         String[] requestParts = request.split("&&");
         switch (requestParts[0]) {
@@ -126,11 +140,13 @@ public class Controller {
                 return addPost(requestParts[1], requestParts[2], requestParts[3], requestParts[4]);
             case "addSubReddit":
                 return addSubReddit(requestParts[1], requestParts[2]);
+            case "getSubReddit":
+                return getSubReddit();
             default:
                 return "invalid request";
         }
     }
-    public boolean isDuplicate(String username,String email) {
+    private boolean isDuplicate(String username,String email) {
         try {
             ArrayList<String> data = Database.getInstance().getTable("&&User").get();
             for (String line : data) {
@@ -147,5 +163,35 @@ public class Controller {
         } catch (IOException e) {
             return false;
         }
+    }
+    private ArrayList<String> Sortfeed(ArrayList<String> input) {
+        ArrayList<String> output = input;
+        //sort by date
+        for(int i=0;i<output.size();i++) {
+            String[] postData = input.get(i).split("&&");
+            for(int j=i+1;j<output.size();j++) {
+                String[] postData2 = input.get(j).split("&&");
+                String[] postDate = postData[2].split("-");
+                String[] postDate2 = postData2[2].split("-");
+                if(Integer.parseInt(postDate[0]) < Integer.parseInt(postDate2[0])) {
+                    String temp = output.get(i);
+                    output.set(i, output.get(j));
+                    output.set(j, temp);
+                } else if(Integer.parseInt(postDate[0]) == Integer.parseInt(postDate2[0])) {
+                    if(Integer.parseInt(postDate[1]) < Integer.parseInt(postDate2[1])) {
+                        String temp = output.get(i);
+                        output.set(i, output.get(j));
+                        output.set(j, temp);
+                    } else if(Integer.parseInt(postDate[1]) == Integer.parseInt(postDate2[1])) {
+                        if(Integer.parseInt(postDate[2]) < Integer.parseInt(postDate2[2])) {
+                            String temp = output.get(i);
+                            output.set(i, output.get(j));
+                            output.set(j, temp);
+                        }
+                    }
+                }
+            }
+        }
+        return output;
     }
 }
